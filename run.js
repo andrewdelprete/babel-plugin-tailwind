@@ -1,7 +1,7 @@
 // run.js
 var fs = require("fs");
 var babel = require("babel-core");
-var tw = require("./src");
+import tw from "./src";
 
 // read the filename from the command line arguments
 var fileName = process.argv[2];

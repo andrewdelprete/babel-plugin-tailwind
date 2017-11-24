@@ -5,7 +5,9 @@
   "license": "MIT",
   "scripts": {
     "build": "babel -d ./lib ./src",
-    "prepublish": "babel -d ./lib ./src --minified"
+    "prepublish": "babel -d ./lib ./src --minified",
+    "pretest": "npm build",
+    "test": "jest"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -13,6 +15,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "jest": "^21.2.1",
     "lodash": "^4.17.4",
     "postcss": "^6.0.14",
     "postcss-js": "^1.0.1",

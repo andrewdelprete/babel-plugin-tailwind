@@ -3,11 +3,12 @@ import postcssJs from "postcss-js";
 import fs from "fs";
 import serialize from "babel-literal-to-ast";
 
-let css = fs.readFileSync("../node_modules/tailwindcss/dist/tailwind.min.css", "utf8");
+let css = fs.readFileSync("./node_modules/tailwindcss/dist/tailwind.min.css", "utf8");
 let root = postcss.parse(css);
-let twObj = formatTailwindObj(postcssJs.objectify(root));
+let twObj = postcssJs.objectify(root);
+twObj = formatTailwindObj(postcssJs.objectify(root));
 
-module.exports = function(babel) {
+export default function(babel) {
   const { types: t } = babel;
 
   return {
@@ -29,7 +30,7 @@ module.exports = function(babel) {
       }
     }
   };
-};
+}
 
 const screens = {
   sm: "576px",

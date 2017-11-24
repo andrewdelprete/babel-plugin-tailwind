@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Check :hover selectors 1`] = `
+"({
+  ':hover': {
+    'color': '#e3342f'
+  }
+});"
+`;
+
+exports[`Check screen size :hover selectors 1`] = `
+"({
+  '@media (min-width: 768px)': {
+    ':hover': {
+      'color': '#e3342f'
+    }
+  }
+});"
+`;
+
+exports[`Check screen size selectors 1`] = `
+"({
+  '@media (min-width: 768px)': {
+    'color': '#e3342f'
+  }
+});"
+`;
+
+exports[`Check selectors 1`] = `
+"({
+  'color': '#e3342f'
+});"
+`;
+
+exports[`Check various types of selectors 1`] = `
+"({
+  'width': '83.33333%',
+  'color': '#3490dc',
+  'borderTopLeftRadius': '9999px',
+  'borderTopRightRadius': '9999px',
+  'borderColor': '#9561e2',
+  ':hover': {
+    'color': '#9561e2'
+  },
+  '@media (min-width: 576px)': {
+    'color': '#e3342f',
+    'borderColor': '#e3342f',
+    ':hover': {
+      'borderColor': '#222b2f'
+    }
+  },
+  '@media (min-width: 768px)': {
+    ':hover': {
+      'width': '83.33333%',
+      'color': '#3490dc'
+    }
+  }
+});"
+`;
