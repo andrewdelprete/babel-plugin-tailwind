@@ -1,5 +1,5 @@
 {
-  "name": "tailwind-css-in-js",
+  "name": "babel-plugin-tailwind-css-in-js",
   "version": "0.1.0",
   "main": "lib/index.js",
   "license": "MIT",
