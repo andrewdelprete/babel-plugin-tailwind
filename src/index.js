@@ -3,9 +3,11 @@ import postcssJs from "postcss-js";
 import fs from "fs";
 import serialize from "babel-literal-to-ast";
 import merge from "lodash/merge";
-import { transform } from "babel-core";
+
+// import tailwind from "tailwindcss";
 
 let css = fs.readFileSync("./node_modules/tailwindcss/dist/tailwind.min.css", "utf8");
+
 let root = postcss.parse(css);
 let twObj = postcssJs.objectify(root);
 twObj = formatTailwindObj(twObj);
@@ -68,18 +70,6 @@ export default function(babel) {
       }
     }
   };
-}
-
-function convertAstObjectToLiteral(farts, t) {
-  return farts.properties.reduce((acc, x) => {
-    acc[x.key.value] = x.value.value;
-
-    if (t.isObjectExpression(x.value)) {
-      acc[x.key.value] = convertAstObjectToLiteral(x.value, t);
-    }
-
-    return acc;
-  }, {});
 }
 
 export function isNormalSelector(selector) {
@@ -170,4 +160,16 @@ export function formatTailwindObj(obj) {
       }
       return acc;
     }, {});
+}
+
+function convertAstObjectToLiteral(farts, t) {
+  return farts.properties.reduce((acc, x) => {
+    acc[x.key.value] = x.value.value;
+
+    if (t.isObjectExpression(x.value)) {
+      acc[x.key.value] = convertAstObjectToLiteral(x.value, t);
+    }
+
+    return acc;
+  }, {});
 }
