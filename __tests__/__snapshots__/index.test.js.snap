@@ -46,7 +46,6 @@ exports[`Check selectors 1`] = `
 exports[`Check various types of selectors 1`] = `
 "({
   'width': '83.33333%',
-  'borderColor': '#9561e2',
   'borderTopLeftRadius': '9999px',
   'borderTopRightRadius': '9999px',
   'color': '#e3342f',
@@ -54,17 +53,17 @@ exports[`Check various types of selectors 1`] = `
     'color': '#9561e2',
     'borderColor': '#e3342f'
   },
-  '@media (min-width: 768px)': {
-    ':hover': {
-      'width': '33.33333%'
-    }
-  },
   '@media (min-width: 576px)': {
     ':hover': {
       'color': '#3490dc',
       'borderColor': '#222b2f'
     },
     'borderColor': '#e3342f'
+  },
+  '@media (min-width: 768px)': {
+    ':hover': {
+      'width': '33.33333%'
+    }
   }
 });"
 `;
