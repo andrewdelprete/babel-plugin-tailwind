@@ -1,6 +1,4 @@
-import fs from "fs";
-import path from "path";
-import { transformFileSync, transform } from "babel-core";
+import { transform } from "babel-core";
 import plugin from "../src";
 
 describe("Check", () => {
@@ -47,6 +45,16 @@ describe("Check", () => {
   test("various types of selectors", () => {
     const code =
       "tw('w-5/6 rounded-t-full text-red hover:text-purple hover:border-red sm:hover:text-blue sm:border-red sm:hover:border-black md:hover:w-1/3 md:hover:w-1/3')";
+
+    const actual = transform(code, {
+      plugins: [plugin]
+    }).code;
+
+    expect(actual).toMatchSnapshot();
+  });
+
+  test("custom selectors", () => {
+    const code = "tw('w-5/6', { ':hover': {'borderColor': 'blue'} })";
 
     const actual = transform(code, {
       plugins: [plugin]

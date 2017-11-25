@@ -2,11 +2,13 @@ import postcss from "postcss";
 import postcssJs from "postcss-js";
 import fs from "fs";
 import serialize from "babel-literal-to-ast";
+import merge from "lodash/merge";
+import { transform } from "babel-core";
 
 let css = fs.readFileSync("./node_modules/tailwindcss/dist/tailwind.min.css", "utf8");
 let root = postcss.parse(css);
 let twObj = postcssJs.objectify(root);
-twObj = formatTailwindObj(postcssJs.objectify(root));
+twObj = formatTailwindObj(twObj);
 
 const screens = {
   sm: "576px",
@@ -29,6 +31,8 @@ export default function(babel) {
           let normalSelectors = {};
           let hoverSelectors = {};
           let mediaSelectors = {};
+          let mediaHoverSelectors = {};
+          let customStyles = {};
 
           for (let x = 0; x <= selectors.length - 1; x++) {
             if (isNormalSelector(selectors[x])) {
@@ -37,17 +41,45 @@ export default function(babel) {
               hoverSelectors = { ...hoverSelectors, ...getHoverSelectors(selectors[x], hoverSelectors) };
             } else if (isMediaSelector(selectors[x])) {
               mediaSelectors = { ...mediaSelectors, ...getMediaSelectors(selectors[x], mediaSelectors) };
+            } else if (isMediaHoverSelector(selectors[x])) {
+              mediaHoverSelectors = {
+                ...mediaHoverSelectors,
+                ...getMediaHoverSelectors(selectors[x], mediaHoverSelectors)
+              };
             }
           }
 
-          let mergeValues = { ...normalSelectors, ...hoverSelectors, ...mediaSelectors };
+          if (t.isObjectExpression(node.arguments[1])) {
+            customStyles = convertAstObjectToLiteral(node.arguments[1], t);
+          }
 
-          var result = serialize(mergeValues);
+          let mergedSelectors = merge(
+            normalSelectors,
+            hoverSelectors,
+            mediaSelectors,
+            mediaHoverSelectors,
+            customStyles
+          );
+
+          let result = serialize(mergedSelectors);
+
           path.replaceWith(result);
         }
       }
     }
   };
+}
+
+function convertAstObjectToLiteral(farts, t) {
+  return farts.properties.reduce((acc, x) => {
+    acc[x.key.value] = x.value.value;
+
+    if (t.isObjectExpression(x.value)) {
+      acc[x.key.value] = convertAstObjectToLiteral(x.value, t);
+    }
+
+    return acc;
+  }, {});
 }
 
 export function isNormalSelector(selector) {
@@ -61,7 +93,15 @@ export function isHoverSelector(selector) {
 export function isMediaSelector(selector) {
   return (
     selector.includes(":") &&
-    selector.split(":").length >= 2 &&
+    selector.split(":").length === 2 &&
+    Object.keys(screens).some(screen => selector.split(":")[0])
+  );
+}
+
+export function isMediaHoverSelector(selector) {
+  return (
+    selector.includes(":") &&
+    selector.split(":").length === 3 &&
     Object.keys(screens).some(screen => selector.split(":")[0])
   );
 }
@@ -78,32 +118,34 @@ export function getHoverSelectors(hoverSelector, hoverSelectors) {
 export function getMediaSelectors(mediaSelector, mediaSelectors) {
   let mediaSelectorSplit = mediaSelector.split(":");
 
-  if (mediaSelectorSplit.length === 2) {
-    let size = mediaSelectorSplit[0];
-    let selector = mediaSelectorSplit[1];
-    let screen = `@media (min-width: ${screens[size]})`;
-    return { [screen]: { ...mediaSelectors[screen], ...twObj[`.${selector}`] } };
-  } else if (mediaSelectorSplit.length === 3) {
-    let size = mediaSelectorSplit[0];
-    let hover = mediaSelectorSplit[1];
-    let selector = mediaSelectorSplit[2];
-    let screen = `@media (min-width: ${screens[size]})`;
+  let size = mediaSelectorSplit[0];
+  let selector = mediaSelectorSplit[1];
+  let screen = `@media (min-width: ${screens[size]})`;
+  return { [screen]: { ...mediaSelectors[screen], ...twObj[`.${selector}`] } };
+}
 
-    if (!mediaSelectors.hasOwnProperty(screen)) {
-      mediaSelectors[screen] = {};
-    }
+export function getMediaHoverSelectors(mediaHoverSelector, mediaHoverSelectors) {
+  let mediaHoverSelectorSplit = mediaHoverSelector.split(":");
 
-    if (!mediaSelectors[screen].hasOwnProperty(":hover")) {
-      mediaSelectors[screen][":hover"] = {};
-    }
+  let size = mediaHoverSelectorSplit[0];
+  let hover = mediaHoverSelectorSplit[1];
+  let selector = mediaHoverSelectorSplit[2];
+  let screen = `@media (min-width: ${screens[size]})`;
 
-    return {
-      [screen]: {
-        ...mediaSelectors[screen],
-        ":hover": { ...mediaSelectors[screen][":hover"], ...twObj[`.${selector}`] }
-      }
-    };
+  if (!mediaHoverSelectors.hasOwnProperty(screen)) {
+    mediaHoverSelectors[screen] = {};
   }
+
+  if (!mediaHoverSelectors[screen].hasOwnProperty(":hover")) {
+    mediaHoverSelectors[screen][":hover"] = {};
+  }
+
+  return {
+    [screen]: {
+      ...mediaHoverSelectors[screen],
+      ":hover": { ...mediaHoverSelectors[screen][":hover"], ...twObj[`.${selector}`] }
+    }
+  };
 }
 
 export function formatTailwindObj(obj) {

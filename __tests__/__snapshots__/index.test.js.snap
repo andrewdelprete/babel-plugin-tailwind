@@ -9,6 +9,15 @@ exports[`Check :hover selectors 1`] = `
 });"
 `;
 
+exports[`Check custom selectors 1`] = `
+"({
+  'width': '83.33333%',
+  ':hover': {
+    'borderColor': 'blue'
+  }
+});"
+`;
+
 exports[`Check screen size :hover selectors 1`] = `
 "({
   '@media (min-width: 768px)': {
@@ -54,11 +63,11 @@ exports[`Check various types of selectors 1`] = `
     'borderColor': '#e3342f'
   },
   '@media (min-width: 576px)': {
+    'borderColor': '#e3342f',
     ':hover': {
       'color': '#3490dc',
       'borderColor': '#222b2f'
-    },
-    'borderColor': '#e3342f'
+    }
   },
   '@media (min-width: 768px)': {
     ':hover': {
