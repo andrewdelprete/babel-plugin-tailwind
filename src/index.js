@@ -8,21 +8,39 @@ let root = postcss.parse(css);
 let twObj = postcssJs.objectify(root);
 twObj = formatTailwindObj(postcssJs.objectify(root));
 
+const screens = {
+  sm: "576px",
+  md: "768px",
+  lg: "992px",
+  xl: "1200px"
+};
+
 export default function(babel) {
   const { types: t } = babel;
 
   return {
-    name: "tailwind-css-in-js", // not required
+    name: "tailwind-to-css-in-js", // not required
     visitor: {
       CallExpression(path, state) {
         const node = path.node;
         if (node.callee.name === "tw" && t.isStringLiteral(node.arguments[0])) {
           let selectors = node.arguments[0].value.split(" ");
 
-          let mediaValues = getMediaValues(selectors, screens);
-          let hoverValues = getHoverValues(selectors);
-          let values = getValues(selectors);
-          let mergeValues = { ...values, ...hoverValues, ...mediaValues };
+          let normalSelectors = {};
+          let hoverSelectors = {};
+          let mediaSelectors = {};
+
+          for (let x = 0; x <= selectors.length - 1; x++) {
+            if (isNormalSelector(selectors[x])) {
+              normalSelectors = { ...normalSelectors, ...getNormalSelectors(selectors[x]) };
+            } else if (isHoverSelector(selectors[x])) {
+              hoverSelectors = { ...hoverSelectors, ...getHoverSelectors(selectors[x], hoverSelectors) };
+            } else if (isMediaSelector(selectors[x])) {
+              mediaSelectors = { ...mediaSelectors, ...getMediaSelectors(selectors[x], mediaSelectors) };
+            }
+          }
+
+          let mergeValues = { ...normalSelectors, ...hoverSelectors, ...mediaSelectors };
 
           var result = serialize(mergeValues);
           path.replaceWith(result);
@@ -32,14 +50,63 @@ export default function(babel) {
   };
 }
 
-const screens = {
-  sm: "576px",
-  md: "768px",
-  lg: "992px",
-  xl: "1200px"
-};
+export function isNormalSelector(selector) {
+  return !selector.includes(":");
+}
 
-function formatTailwindObj(obj) {
+export function isHoverSelector(selector) {
+  return selector.includes(":") && selector.split(":")[0] === "hover";
+}
+
+export function isMediaSelector(selector) {
+  return (
+    selector.includes(":") &&
+    selector.split(":").length >= 2 &&
+    Object.keys(screens).some(screen => selector.split(":")[0])
+  );
+}
+
+export function getNormalSelectors(selector) {
+  return twObj[`.${selector}`];
+}
+
+export function getHoverSelectors(hoverSelector, hoverSelectors) {
+  let selector = hoverSelector.split(":")[1];
+  return { ":hover": { ...hoverSelectors[":hover"], ...twObj[`.${selector}`] } };
+}
+
+export function getMediaSelectors(mediaSelector, mediaSelectors) {
+  let mediaSelectorSplit = mediaSelector.split(":");
+
+  if (mediaSelectorSplit.length === 2) {
+    let size = mediaSelectorSplit[0];
+    let selector = mediaSelectorSplit[1];
+    let screen = `@media (min-width: ${screens[size]})`;
+    return { [screen]: { ...mediaSelectors[screen], ...twObj[`.${selector}`] } };
+  } else if (mediaSelectorSplit.length === 3) {
+    let size = mediaSelectorSplit[0];
+    let hover = mediaSelectorSplit[1];
+    let selector = mediaSelectorSplit[2];
+    let screen = `@media (min-width: ${screens[size]})`;
+
+    if (!mediaSelectors.hasOwnProperty(screen)) {
+      mediaSelectors[screen] = {};
+    }
+
+    if (!mediaSelectors[screen].hasOwnProperty(":hover")) {
+      mediaSelectors[screen][":hover"] = {};
+    }
+
+    return {
+      [screen]: {
+        ...mediaSelectors[screen],
+        ":hover": { ...mediaSelectors[screen][":hover"], ...twObj[`.${selector}`] }
+      }
+    };
+  }
+}
+
+export function formatTailwindObj(obj) {
   return Object.keys(twObj)
     .filter(k => k.includes("."))
     .map(k => {
@@ -61,62 +128,4 @@ function formatTailwindObj(obj) {
       }
       return acc;
     }, {});
-}
-
-function getMediaValues(selectors, values) {
-  let mediaValues = {};
-  for (let screen in screens) {
-    selectors.forEach(s => {
-      if (s.includes(screen) && !s.includes("hover")) {
-        let size = s.split(":")[0];
-        let selector = s.split(":")[1];
-        let screenString = `@media (min-width: ${screens[screen]})`;
-
-        if (!mediaValues.hasOwnProperty([screenString])) {
-          mediaValues[screenString] = twObj[`.${selector}`];
-        } else {
-          Object.assign(mediaValues[screenString], twObj[`.${selector}`]);
-        }
-      } else if (s.includes(screen) && s.includes("hover")) {
-        let size = s.split(":")[0];
-        let hover = s.split(":")[1];
-        let selector = s.split(":")[2];
-        let screenString = `@media (min-width: ${screens[screen]})`;
-
-        if (!mediaValues.hasOwnProperty([screenString])) {
-          mediaValues[screenString] = {};
-          mediaValues[screenString][":hover"] = twObj[`.${selector}`];
-        } else {
-          if (!mediaValues[screenString].hasOwnProperty(":hover")) {
-            mediaValues[screenString][":hover"] = twObj[`.${selector}`];
-          } else {
-            Object.assign(mediaValues[screenString][":hover"], twObj[`.${selector}`]);
-          }
-        }
-      }
-    });
-  }
-  return mediaValues;
-}
-
-function getValues(selectors) {
-  return [...selectors]
-    .filter(s => !s.includes("hover:"))
-    .map(s => twObj[`.${s}`])
-    .reduce((acc, x) => {
-      for (var key in x) acc[key] = x[key];
-      return acc;
-    }, {});
-}
-
-function getHoverValues(selectors) {
-  let hoverValues = [...selectors]
-    .filter(s => s.includes("hover:"))
-    .map(s => twObj[`.${s}:hover`])
-    .reduce((acc, x) => {
-      for (var key in x) acc[key] = x[key];
-      return acc;
-    }, {});
-
-  return Object.keys(hoverValues).length > 0 ? { ":hover": hoverValues } : {};
 }

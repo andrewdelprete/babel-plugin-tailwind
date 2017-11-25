@@ -3,7 +3,8 @@
 exports[`Check :hover selectors 1`] = `
 "({
   ':hover': {
-    'color': '#e3342f'
+    'color': '#e3342f',
+    'borderColor': '#9561e2'
   }
 });"
 `;
@@ -12,7 +13,13 @@ exports[`Check screen size :hover selectors 1`] = `
 "({
   '@media (min-width: 768px)': {
     ':hover': {
-      'color': '#e3342f'
+      'color': '#e3342f',
+      'borderColor': '#ffed4a'
+    }
+  },
+  '@media (min-width: 992px)': {
+    ':hover': {
+      'borderColor': '#9561e2'
     }
   }
 });"
@@ -20,8 +27,12 @@ exports[`Check screen size :hover selectors 1`] = `
 
 exports[`Check screen size selectors 1`] = `
 "({
+  '@media (min-width: 576px)': {
+    'color': '#9561e2'
+  },
   '@media (min-width: 768px)': {
-    'color': '#e3342f'
+    'color': '#e3342f',
+    'borderColor': '#9561e2'
   }
 });"
 `;
@@ -35,25 +46,25 @@ exports[`Check selectors 1`] = `
 exports[`Check various types of selectors 1`] = `
 "({
   'width': '83.33333%',
-  'color': '#3490dc',
+  'borderColor': '#9561e2',
   'borderTopLeftRadius': '9999px',
   'borderTopRightRadius': '9999px',
-  'borderColor': '#9561e2',
+  'color': '#e3342f',
   ':hover': {
-    'color': '#9561e2'
-  },
-  '@media (min-width: 576px)': {
-    'color': '#e3342f',
-    'borderColor': '#e3342f',
-    ':hover': {
-      'borderColor': '#222b2f'
-    }
+    'color': '#9561e2',
+    'borderColor': '#e3342f'
   },
   '@media (min-width: 768px)': {
     ':hover': {
-      'width': '83.33333%',
-      'color': '#3490dc'
+      'width': '33.33333%'
     }
+  },
+  '@media (min-width: 576px)': {
+    ':hover': {
+      'color': '#3490dc',
+      'borderColor': '#222b2f'
+    },
+    'borderColor': '#e3342f'
   }
 });"
 `;

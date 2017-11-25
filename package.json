@@ -6,7 +6,6 @@
   "scripts": {
     "build": "babel -d ./lib ./src",
     "prepublish": "babel -d ./lib ./src --minified",
-    "pretest": "npm build",
     "test": "jest"
   },
   "devDependencies": {
