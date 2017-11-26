@@ -318,8 +318,9 @@ babel-plugin-syntax-jsx@^6.3.13, babel-plugin-syntax-jsx@^6.8.0:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-syntax-jsx/-/babel-plugin-syntax-jsx-6.18.0.tgz#0af32a9a6e13ca7a3fd5069e62d7b0f58d0d8946"
 
-babel-plugin-tailwind-to-css-in-js@../lib:
-  version "0.0.0"
+babel-plugin-tailwind@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/babel-plugin-tailwind/-/babel-plugin-tailwind-0.1.2.tgz#aacb76cddf26516a2de883d21c5217aa0ebf5a65"
 
 babel-plugin-transform-flow-strip-types@^6.22.0:
   version "6.22.0"
