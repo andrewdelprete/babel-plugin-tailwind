@@ -43,7 +43,7 @@ class App extends React.Component {
 
 ## Installation
 
-Assuming you already have babel setup in your project.
+This is assuming you already have babel setup in your project. The example below uses `babel-preset-env`.
 
 `yarn add babel-plugin-tailwind`
 
@@ -52,7 +52,7 @@ Assuming you already have babel setup in your project.
 ```javascript
 {
   ...,
-  "plugins": ["babel-plugin-tailwind"]
+  "plugins": ["env", "babel-plugin-tailwind"]
 }
 ```
 
