@@ -1,13 +1,15 @@
 {
   "name": "babel-plugin-tailwind",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "lib/index.js",
   "scripts": {
     "build": "babel -d ./lib ./src",
     "prepublish": "babel -d ./lib ./src --minified",
     "test": "jest"
   },
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
