@@ -2,7 +2,6 @@
   "name": "babel-plugin-tailwind-css-in-js",
   "version": "0.1.0",
   "main": "lib/index.js",
-  "license": "MIT",
   "scripts": {
     "build": "babel -d ./lib ./src",
     "prepublish": "babel -d ./lib ./src --minified",
@@ -24,6 +23,23 @@
     "react-dom": "^16.1.1",
     "tailwindcss": "^0.2.2"
   },
+  "keywords": [
+    "react",
+    "css",
+    "css-in-js",
+    "cssinjs",
+    "styled-components",
+    "glamor",
+    "jsxstyle",
+    "utility",
+    "atomic",
+    "tailwind",
+    "tailwindcss"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andrewdelprete/babel-plugin-tailwind-to-css-in-js"
+  },
   "author": "Andrew Del Prete",
-  "private": true
+  "license": "MIT"
 }
