@@ -3,21 +3,25 @@ import postcssJs from "postcss-js";
 import fs from "fs";
 import serialize from "babel-literal-to-ast";
 import merge from "lodash/merge";
+import path from "path";
 
-// import tailwind from "tailwindcss";
+let twConfig = {};
+if (fs.existsSync("./tailwind.js")) {
+  twConfig = require(process.cwd() + "/tailwind.js");
+} else {
+  twConfig = require("tailwindcss/defaultConfig")();
+}
 
-let css = fs.readFileSync("./node_modules/tailwindcss/dist/tailwind.min.css", "utf8");
+let twObj = {};
+if (fs.existsSync("./tailwind.custom.css")) {
+  twObj = fs.readFileSync("./tailwind.custom.css", "utf8");
+} else {
+  twObj = fs.readFileSync("./node_modules/tailwindcss/dist/tailwind.min.css", "utf8");
+}
 
-let root = postcss.parse(css);
-let twObj = postcssJs.objectify(root);
+twObj = postcss.parse(twObj);
+twObj = postcssJs.objectify(twObj);
 twObj = formatTailwindObj(twObj);
-
-const screens = {
-  sm: "576px",
-  md: "768px",
-  lg: "992px",
-  xl: "1200px"
-};
 
 export default function(babel) {
   const { types: t } = babel;
@@ -84,7 +88,7 @@ export function isMediaSelector(selector) {
   return (
     selector.includes(":") &&
     selector.split(":").length === 2 &&
-    Object.keys(screens).some(screen => selector.split(":")[0])
+    Object.keys(twConfig.screens).some(screen => selector.split(":")[0])
   );
 }
 
@@ -92,7 +96,7 @@ export function isMediaHoverSelector(selector) {
   return (
     selector.includes(":") &&
     selector.split(":").length === 3 &&
-    Object.keys(screens).some(screen => selector.split(":")[0])
+    Object.keys(twConfig.screens).some(screen => selector.split(":")[0])
   );
 }
 
@@ -110,7 +114,7 @@ export function getMediaSelectors(mediaSelector, mediaSelectors) {
 
   let size = mediaSelectorSplit[0];
   let selector = mediaSelectorSplit[1];
-  let screen = `@media (min-width: ${screens[size]})`;
+  let screen = `@media (min-width: ${twConfig.screens[size]})`;
   return { [screen]: { ...mediaSelectors[screen], ...twObj[`.${selector}`] } };
 }
 
@@ -120,7 +124,7 @@ export function getMediaHoverSelectors(mediaHoverSelector, mediaHoverSelectors) 
   let size = mediaHoverSelectorSplit[0];
   let hover = mediaHoverSelectorSplit[1];
   let selector = mediaHoverSelectorSplit[2];
-  let screen = `@media (min-width: ${screens[size]})`;
+  let screen = `@media (min-width: ${twConfig.screens[size]})`;
 
   if (!mediaHoverSelectors.hasOwnProperty(screen)) {
     mediaHoverSelectors[screen] = {};

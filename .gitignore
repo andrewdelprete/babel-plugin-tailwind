@@ -1,5 +1,6 @@
 lib
 .vscode
+tailwind.custom.css
 
 # Logs
 logs

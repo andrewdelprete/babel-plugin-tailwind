@@ -1,22 +1,23 @@
 {
   "scripts": {
-    "start": "webpack-dev-server"
+    "start": "npm run generate:tailwindcss && webpack-dev-server",
+    "build": "npm run generate:tailwindcss && webpack -p",
+    "generate:tailwindcss": "postcss tailwind.css -o tailwind.custom.css"
   },
   "devDependencies": {
-    "babel": "^6.23.0",
-    "babel-plugin-tailwind-to-css-in-js": "../lib"
-  },
-  "dependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "babel-plugin-tailwind-to-css-in-js": "../lib",
     "babel-preset-react": "^6.24.1",
+    "babel": "^6.23.0",
     "glamor": "^2.20.40",
     "glamorous": "^4.11.0",
     "html-webpack-plugin": "^2.30.1",
-    "react": "^16.1.1",
+    "postcss-cli": "^4.1.1",
     "react-dom": "^16.1.1",
+    "react": "^16.1.1",
     "tailwindcss": "^0.2.2",
-    "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.4"
+    "webpack-dev-server": "^2.9.4",
+    "webpack": "^3.8.1"
   }
 }

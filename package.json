@@ -8,16 +8,17 @@
     "prepublish": "babel -d ./lib ./src --minified",
     "test": "jest"
   },
+  "files": ["lib"],
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-literal-to-ast": "^1.0.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "babylon": "^6.18.0",
     "jest": "^21.2.1",
     "lodash": "^4.17.4",
     "postcss": "^6.0.14",
+    "postcss-cli": "^4.1.1",
     "postcss-js": "^1.0.1",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
