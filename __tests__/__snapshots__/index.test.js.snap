@@ -2,6 +2,7 @@
 
 exports[`Check :hover selectors 1`] = `
 "({
+  'width': '83.33333%',
   ':hover': {
     'color': '#e3342f',
     'borderColor': '#9561e2'
@@ -20,10 +21,10 @@ exports[`Check custom selectors 1`] = `
 
 exports[`Check screen size :hover selectors 1`] = `
 "({
+  'width': '83.33333%',
   '@media (min-width: 768px)': {
     ':hover': {
-      'color': '#e3342f',
-      'borderColor': '#ffed4a'
+      'color': '#e3342f'
     }
   },
   '@media (min-width: 992px)': {
@@ -36,6 +37,7 @@ exports[`Check screen size :hover selectors 1`] = `
 
 exports[`Check screen size selectors 1`] = `
 "({
+  'width': '83.33333%',
   '@media (min-width: 576px)': {
     'color': '#9561e2'
   },

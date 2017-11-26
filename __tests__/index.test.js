@@ -13,7 +13,7 @@ describe("Check", () => {
   });
 
   test(":hover selectors", () => {
-    const code = "tw('hover:text-red hover:border-purple')";
+    const code = "tw('w-5/6 hover:text-red hover:border-purple')";
 
     const actual = transform(code, {
       plugins: [plugin]
@@ -23,7 +23,7 @@ describe("Check", () => {
   });
 
   test("screen size selectors", () => {
-    const code = "tw('sm:text-purple md:text-red md:border-purple')";
+    const code = "tw('w-5/6 sm:text-purple md:text-red md:border-purple')";
 
     const actual = transform(code, {
       plugins: [plugin]
@@ -33,7 +33,7 @@ describe("Check", () => {
   });
 
   test("screen size :hover selectors", () => {
-    const code = "tw('md:hover:text-red md:hober:border-yellow lg:hover:border-purple')";
+    const code = "tw('w-5/6 md:hover:text-red lg:hover:border-purple')";
 
     const actual = transform(code, {
       plugins: [plugin]
