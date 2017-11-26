@@ -1,5 +1,5 @@
 {
-  "name": "babel-plugin-tailwind-css-in-js",
+  "name": "babel-plugin-tailwind",
   "version": "0.1.1",
   "main": "lib/index.js",
   "scripts": {
@@ -7,9 +7,7 @@
     "prepublish": "babel -d ./lib ./src --minified",
     "test": "jest"
   },
-  "files": [
-    "lib"
-  ],
+  "files": ["lib"],
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",

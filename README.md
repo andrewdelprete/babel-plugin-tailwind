@@ -1,4 +1,4 @@
-# babel-plugin-tailwind-to-css-in-js
+# babel-plugin-tailwind
 
 Transforms [TailwindCSS](https://www.tailwindcss.com) classes to CSS-in-JS at build time.
 
@@ -45,14 +45,14 @@ class App extends React.Component {
 
 Assuming you already have babel setup in your project.
 
-`yarn add babel-plugin-tailwind-to-css-in-js`
+`yarn add babel-plugin-tailwind`
 
 .babelrc
 
 ```javascript
 {
   ...,
-  "plugins": ["babel-plugin-tailwind-to-css-in-js"]
+  "plugins": ["babel-plugin-tailwind"]
 }
 ```
 
