@@ -3,6 +3,7 @@ import postcssJs from "postcss-js";
 import fs from "fs";
 import serialize from "babel-literal-to-ast";
 import merge from "lodash/merge";
+import isArray from "lodash/isArray";
 import path from "path";
 
 let twConfig = {};
@@ -29,10 +30,20 @@ export default function(babel) {
   return {
     name: "tailwind-to-css-in-js", // not required
     visitor: {
-      CallExpression(path, state) {
+      CallExpression(path) {
         const node = path.node;
-        if (node.callee.name === "tw" && t.isStringLiteral(node.arguments[0])) {
-          let selectors = node.arguments[0].value.split(" ");
+
+        if (
+          node.callee.name === "tw" &&
+          (t.isStringLiteral(node.arguments[0]) || t.isArrayExpression(node.arguments[0]))
+        ) {
+          let selectors = isArray(node.arguments[0].elements)
+            ? node.arguments[0].elements
+            : node.arguments[0].value.split(" ");
+
+          if (t.isStringLiteral(selectors[0])) {
+            selectors = selectors.map(s => s.value);
+          }
 
           let normalSelectors = {};
           let hoverSelectors = {};

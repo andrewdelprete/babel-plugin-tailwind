@@ -9,6 +9,7 @@ import glamorous from "glamorous";
 const Container = glamorous.div(
   tw("bg-white container mx-auto max-w-sm shadow-lg rounded-lg overflow-hidden font-sans")
 );
+
 const Wrapper = glamorous.div(tw("sm:flex sm:items-center px-6 py-4"));
 const Avatar = glamorous.img(tw("block h-16 sm:h-24 rounded-full mx-auto mb-4 sm:mb-0 sm:mr-4 sm:ml-0"));
 const TextContainer = glamorous.div(tw("text-center sm:text-left sm:flex-grow"));
@@ -16,9 +17,20 @@ const TextSpacing = glamorous.div(tw("mb-4"));
 const Company = glamorous.div(tw("text-sm leading-tight text-grey-dark"));
 const Name = glamorous.div(tw("text-xl leading-tight"));
 const Button = glamorous.button(
-  tw(
-    "text-xs font-semibold rounded-full px-4 py-1 leading-normal bg-white border border-purple text-purple hover:bg-purple hover:text-white"
-  )
+  tw([
+    "bg-white",
+    "border-purple",
+    "border",
+    "font-semibold",
+    "hover:bg-purple",
+    "hover:text-white",
+    "leading-normal",
+    "px-4",
+    "py-1",
+    "rounded-full",
+    "text-purple",
+    "text-xs"
+  ])
 );
 
 function App() {

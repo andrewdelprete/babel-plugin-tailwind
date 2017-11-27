@@ -62,4 +62,14 @@ describe("Check", () => {
 
     expect(actual).toMatchSnapshot();
   });
+
+  test("array of selectors", () => {
+    const code = "tw(['w-5/6', 'md:text-red'])";
+
+    const actual = transform(code, {
+      plugins: [plugin]
+    }).code;
+
+    expect(actual).toMatchSnapshot();
+  });
 });

@@ -10,6 +10,15 @@ exports[`Check :hover selectors 1`] = `
 });"
 `;
 
+exports[`Check array of selectors 1`] = `
+"({
+  'width': '83.33333%',
+  '@media (min-width: 768px)': {
+    'color': '#e3342f'
+  }
+});"
+`;
+
 exports[`Check custom selectors 1`] = `
 "({
   'width': '83.33333%',
