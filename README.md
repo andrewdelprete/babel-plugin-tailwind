@@ -9,7 +9,11 @@ Before:
 ```jsx
 import { css } from "glamor";
 
-const classes = css(tw("w-5/6 sm:text-purple md:text-red md:border-purple"));
+// as a string of classes
+let classes = css(tw("w-5/6 sm:text-purple md:text-red md:border-purple"));
+
+// or as an array
+// let classes = css(tw(["w-5/6", "sm:text-purple", "md:text-red", "md:border-purple"));
 
 class App extends React.Component {
   render() {
