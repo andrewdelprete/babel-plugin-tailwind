@@ -12,7 +12,13 @@ module.exports = {
     filename: "app.bundle.js"
   },
   module: {
-    loaders: [{ test: /\.js$/, loader: "babel-loader", exclude: /node_modules/ }]
+    rules: [
+      {
+        test: /\.js$/,
+        loader: "babel-loader",
+        exclude: /node_modules/
+      }
+    ]
   },
   plugins: [HtmlWebpackPluginConfig]
 };
