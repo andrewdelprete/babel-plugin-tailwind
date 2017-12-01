@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { css } from "glamor";
+import { css } from "emotion";
 import glamorous from "glamorous";
+import styled from "react-emotion";
 
 /**
  * Styles
@@ -16,7 +17,7 @@ const TextContainer = glamorous.div(tw("text-center sm:text-left sm:flex-grow"))
 const TextSpacing = glamorous.div(tw("mb-4"));
 const Company = glamorous.div(tw("text-sm leading-tight text-grey-dark"));
 const Name = glamorous.div(tw("text-xl leading-tight"));
-const Button = glamorous.button(
+const Button = styled("button")(
   tw([
     "bg-white",
     "border-purple",
