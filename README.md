@@ -55,8 +55,8 @@ This is assuming you already have babel setup in your project. The example below
 
 ```javascript
 {
-  ...,
-  "plugins": ["env", "babel-plugin-tailwind"]
+  "presets": ['env'],
+  "plugins": ["babel-plugin-tailwind"]
 }
 ```
 
