@@ -13,7 +13,7 @@
   "dependencies": {
     "babel-literal-to-ast": "^1.0.0",
     "postcss-js": "^1.0.1",
-    "tailwindcss": "^0.2.2"
+    "tailwindcss": "^0.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

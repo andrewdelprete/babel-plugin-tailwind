@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Check :focus selectors 1`] = `
+"({
+  ':focus': {
+    'color': '#e3342f'
+  }
+});"
+`;
+
 exports[`Check :hover selectors 1`] = `
 "({
   'width': '83.33333%',
@@ -24,6 +32,22 @@ exports[`Check custom selectors 1`] = `
   'width': '83.33333%',
   ':hover': {
     'borderColor': 'blue'
+  }
+});"
+`;
+
+exports[`Check screen size :focus selectors 1`] = `
+"({
+  'width': '83.33333%',
+  '@media (min-width: 768px)': {
+    ':focus': {
+      'color': '#e3342f'
+    }
+  },
+  '@media (min-width: 992px)': {
+    ':focus': {
+      'borderColor': '#9561e2'
+    }
   }
 });"
 `;
@@ -71,6 +95,9 @@ exports[`Check various types of selectors 1`] = `
   'color': '#e3342f',
   ':hover': {
     'color': '#9561e2',
+    'borderColor': '#e3342f'
+  },
+  ':focus': {
     'borderColor': '#e3342f'
   },
   '@media (min-width: 576px)': {

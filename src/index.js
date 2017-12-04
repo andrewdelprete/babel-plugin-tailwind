@@ -45,23 +45,32 @@ export default function(babel) {
             selectors = selectors.map(s => s.value);
           }
 
-          let normalSelectors = {};
-          let hoverSelectors = {};
-          let mediaSelectors = {};
-          let mediaHoverSelectors = {};
           let customStyles = {};
+          let focusSelectors = {};
+          let hoverSelectors = {};
+          let mediaFocusSelectors = {};
+          let mediaHoverSelectors = {};
+          let mediaSelectors = {};
+          let normalSelectors = {};
 
           for (let x = 0; x <= selectors.length - 1; x++) {
             if (isNormalSelector(selectors[x])) {
               normalSelectors = { ...normalSelectors, ...getNormalSelectors(selectors[x]) };
             } else if (isHoverSelector(selectors[x])) {
               hoverSelectors = { ...hoverSelectors, ...getHoverSelectors(selectors[x], hoverSelectors) };
+            } else if (isFocusSelector(selectors[x])) {
+              focusSelectors = { ...focusSelectors, ...getFocusSelectors(selectors[x], focusSelectors) };
             } else if (isMediaSelector(selectors[x])) {
               mediaSelectors = { ...mediaSelectors, ...getMediaSelectors(selectors[x], mediaSelectors) };
             } else if (isMediaHoverSelector(selectors[x])) {
               mediaHoverSelectors = {
                 ...mediaHoverSelectors,
                 ...getMediaHoverSelectors(selectors[x], mediaHoverSelectors)
+              };
+            } else if (isMediaFocusSelector(selectors[x])) {
+              mediaFocusSelectors = {
+                ...mediaFocusSelectors,
+                ...getMediaFocusSelectors(selectors[x], mediaFocusSelectors)
               };
             }
           }
@@ -73,8 +82,10 @@ export default function(babel) {
           let mergedSelectors = merge(
             normalSelectors,
             hoverSelectors,
+            focusSelectors,
             mediaSelectors,
             mediaHoverSelectors,
+            mediaFocusSelectors,
             customStyles
           );
 
@@ -95,6 +106,10 @@ export function isHoverSelector(selector) {
   return selector.includes(":") && selector.split(":")[0] === "hover";
 }
 
+export function isFocusSelector(selector) {
+  return selector.includes(":") && selector.split(":")[0] === "focus";
+}
+
 export function isMediaSelector(selector) {
   return (
     selector.includes(":") &&
@@ -107,6 +122,16 @@ export function isMediaHoverSelector(selector) {
   return (
     selector.includes(":") &&
     selector.split(":").length === 3 &&
+    selector.split(":")[1] === "hover" &&
+    Object.keys(twConfig.screens).some(screen => selector.split(":")[0])
+  );
+}
+
+export function isMediaFocusSelector(selector) {
+  return (
+    selector.includes(":") &&
+    selector.split(":").length === 3 &&
+    selector.split(":")[1] === "focus" &&
     Object.keys(twConfig.screens).some(screen => selector.split(":")[0])
   );
 }
@@ -118,6 +143,11 @@ export function getNormalSelectors(selector) {
 export function getHoverSelectors(hoverSelector, hoverSelectors) {
   let selector = hoverSelector.split(":")[1];
   return { ":hover": { ...hoverSelectors[":hover"], ...twObj[`.${selector}`] } };
+}
+
+export function getFocusSelectors(focusSelector, focusSelectors) {
+  let selector = focusSelector.split(":")[1];
+  return { ":focus": { ...focusSelectors[":focus"], ...twObj[`.${selector}`] } };
 }
 
 export function getMediaSelectors(mediaSelector, mediaSelectors) {
@@ -149,6 +179,30 @@ export function getMediaHoverSelectors(mediaHoverSelector, mediaHoverSelectors) 
     [screen]: {
       ...mediaHoverSelectors[screen],
       ":hover": { ...mediaHoverSelectors[screen][":hover"], ...twObj[`.${selector}`] }
+    }
+  };
+}
+
+export function getMediaFocusSelectors(mediaFocusSelector, mediaFocusSelectors) {
+  let mediaFocusSelectorSplit = mediaFocusSelector.split(":");
+
+  let size = mediaFocusSelectorSplit[0];
+  let hover = mediaFocusSelectorSplit[1];
+  let selector = mediaFocusSelectorSplit[2];
+  let screen = `@media (min-width: ${twConfig.screens[size]})`;
+
+  if (!mediaFocusSelectors.hasOwnProperty(screen)) {
+    mediaFocusSelectors[screen] = {};
+  }
+
+  if (!mediaFocusSelectors[screen].hasOwnProperty(":focus")) {
+    mediaFocusSelectors[screen][":focus"] = {};
+  }
+
+  return {
+    [screen]: {
+      ...mediaFocusSelectors[screen],
+      ":focus": { ...mediaFocusSelectors[screen][":focus"], ...twObj[`.${selector}`] }
     }
   };
 }

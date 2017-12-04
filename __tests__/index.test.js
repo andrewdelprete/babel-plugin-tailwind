@@ -12,6 +12,16 @@ describe("Check", () => {
     expect(actual).toMatchSnapshot();
   });
 
+  test(":focus selectors", () => {
+    const code = "tw('focus:text-red')";
+
+    const actual = transform(code, {
+      plugins: [plugin]
+    }).code;
+
+    expect(actual).toMatchSnapshot();
+  });
+
   test(":hover selectors", () => {
     const code = "tw('w-5/6 hover:text-red hover:border-purple')";
 
@@ -42,9 +52,19 @@ describe("Check", () => {
     expect(actual).toMatchSnapshot();
   });
 
+  test("screen size :focus selectors", () => {
+    const code = "tw('w-5/6 md:focus:text-red lg:focus:border-purple')";
+
+    const actual = transform(code, {
+      plugins: [plugin]
+    }).code;
+
+    expect(actual).toMatchSnapshot();
+  });
+
   test("various types of selectors", () => {
     const code =
-      "tw('w-5/6 rounded-t-full text-red hover:text-purple hover:border-red sm:hover:text-blue sm:border-red sm:hover:border-black md:hover:w-1/3 md:hover:w-1/3')";
+      "tw('w-5/6 rounded-t-full text-red hover:text-purple hover:border-red sm:hover:text-blue sm:border-red sm:hover:border-black md:hover:w-1/3 md:hover:w-1/3 focus:border-red')";
 
     const actual = transform(code, {
       plugins: [plugin]
