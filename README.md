@@ -2,7 +2,7 @@
 
 Transforms [TailwindCSS](https://www.tailwindcss.com) classes to CSS-in-JS at build time.
 
-> Note - Works with CSS-in-JS libraries that accept a style object such as Glamor, Glamorous, CXS, etc...
+> Note - Works with CSS-in-JS libraries that accept a style object such as Glamor, Glamorous, Emotion, CXS, etc...
 
 Before:
 
