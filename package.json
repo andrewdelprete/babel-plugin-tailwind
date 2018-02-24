@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-tailwind",
-  "version": "0.1.8",
+  "version": "0.1.10",
   "main": "lib/index.js",
   "scripts": {
     "build": "babel -d ./lib ./src",
