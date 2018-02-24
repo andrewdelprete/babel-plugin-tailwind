@@ -104,7 +104,7 @@ exports[`Check various types of selectors 1`] = `
     'borderColor': '#e3342f',
     ':hover': {
       'color': '#3490dc',
-      'borderColor': '#222b2f'
+      'borderColor': '#22292f'
     }
   },
   '@media (min-width: 768px)': {
